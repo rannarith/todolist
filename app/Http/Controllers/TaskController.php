@@ -17,7 +17,7 @@ class TaskController extends Controller
     public function index()
     {
         $tasks = Task::all();
-        // $tasks = Task::where('user_id', Auth::user()->name);
+        // $tasks = Task::where('user_id', Auth::user()->id);
         return view('index', compact('tasks'));
     }
 
@@ -39,9 +39,13 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        $task = new Task;
-        $task->content = $request->input('content');
-        Auth::user()->tasks()->save($task);
+        if($request->input('content')) 
+        {
+            $task = new Task;
+            $task->content = $request->input('content');
+            Auth::user()->tasks()->save($task);
+        }
+       
         return redirect()->back();
 
     }
@@ -65,7 +69,9 @@ class TaskController extends Controller
      */
     public function edit($id)
     {
-        //
+        $task = Task::find($id);
+        return view('edit', compact('task'));
+
     }
 
     /**
@@ -77,7 +83,14 @@ class TaskController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if($request->input('content')) 
+        {
+            $task = Task::find($id);
+            $task->content = $request->input('content');
+            $task->save();
+        }
+        
+        return redirect('/');
     }
 
     /**
@@ -88,6 +101,17 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $task = Task::find($id);
+        $task->delete();
+        return redirect()->back();
     }
+
+    public function updateStatus($id)
+    {
+        $task = Task::find($id);
+        $task->status = ! $task->status;
+        $task->save();
+        return redirect()->back();
+    }
+    
 }

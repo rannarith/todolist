@@ -17,15 +17,16 @@
 
       <h3>Todo</h3>
       <ul id="incomplete-tasks">
-        @foreach($tasks as $task)
-        <li>
-          <input type="checkbox" >
-          <label>{{ $task->content }}</label>
-          <input type="text">
-          <a class="edit" href=" {{ route('edit', $task->id) }}">Edit</a>
-          <a class="delete" href="{{ route('destroy', $task->id) }}">Delete</a>
-          @csrf
-        @endforeach
+        
+        <li class="editMode">
+          <form action="{{ route('update', $task->id) }}" method="POST">
+            <input type="checkbox">
+            <!-- <label>{{ $task->content }}</label> -->
+            <input name="content" type="text" value="{{ $task->content }}">
+            <button class="edit">Update</button>
+            
+            @csrf
+          </form>
         <!-- </li>
         <li class="editMode">
           <input type="checkbox">

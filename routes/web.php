@@ -17,6 +17,9 @@
 Route::middleware(['auth'])->group(function () {
     Route::get('/', 'TaskController@index');
     Route::post('/store', 'TaskController@store')->name('store');
+    Route::get('/edit/{id}', 'TaskController@edit')->name('edit');
+    Route::post('/update/{id}', 'TaskController@update')->name('update');
+    Route::get('/destroy/{id}', 'TaskController@destroy')->name('destroy');
 });
 
 
